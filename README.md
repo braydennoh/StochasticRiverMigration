@@ -437,3 +437,4 @@ plt.legend('',frameon=False)
 ```
 <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/4.png" width="800" height="800">
 
+### Developed by Brayden Noh and Omar Wani
