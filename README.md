@@ -32,10 +32,10 @@ mpl.rcParams['figure.dpi'] = 500
 import seaborn as sns                   
 ```
 
-We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). Centerline data are available in [ChannelGeometry](https://github.com/snohatech/StatMeanderpy/tree/main/ChannelGeometry) folder. 
+We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). Centerline data are available to download in [ChannelGeometry](https://github.com/snohatech/StatMeanderpy/tree/main/ChannelGeometry) folder. 
 
 ```ruby
-os.chdir(r"/Users/StatMeanderpyGithub/ChannelGeometry/2Bends")
+os.chdir(r"/Users/StatMeanderpyGithub/ChannelGeometry/2Bends") #directory of the github or the channel geometry folder
 cl1=np.loadtxt('0year.txt',delimiter=' ')
 cl2=np.loadtxt('10year.txt',delimiter=' ')
 
