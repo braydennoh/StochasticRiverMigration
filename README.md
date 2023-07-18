@@ -15,8 +15,7 @@ River migration can be predicted using a similar approach to weather forecasting
 
 First, import the library:
 
-<code>import numpy as np<code>
-<code>import os<code>
-import matplotlib.pyplot as plt
-import meanderpy as mp
+<code>import numpy as np
+import os<code>
+
 
