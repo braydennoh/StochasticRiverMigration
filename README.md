@@ -60,7 +60,6 @@ t1 = 0                            # time step when incision starts
 t2 = 0                            # time step when lateral migration starts
 t3 = 1200                         # time step when aggradation starts
 aggr_factor = 2e-9                # aggradation factor (m/s, about 0.18 m/year, it kicks in after t3) after t3)
-sc = 1.0
 x=cl1[:,1]*10                     # initial x channel geometry
 y=cl1[:,0]*10                     # initial y channel geometry
 z=np.zeros(len(x))                # initial z (0)
@@ -86,6 +85,7 @@ pd.DataFrame({"x":-cl2[:,1], "y":-cl2[:,0]}).plot.line(x='x', y='y', ax= ax, lab
 Because the channel array data do not have the same amount of array lengths, we need to interpolate them to have the same length. We are interpolating for 1000 lengths for initial (ch1) and final (ch2) channel centerlines. 
 
 ```ruby
+# Interpolating the initial channel
 t = np.linspace(0,1,np.shape(cl1[:,])[0]) 
 x_o = -cl1[:,1].flatten()           
 y_o = -cl1[:,0].flatten()         
@@ -99,7 +99,7 @@ ynew_o = fy_o(tnew)   # get interpolated y values
 data_obs_ins = np.array([xnew_o,ynew_o])
 data_obs_ins = np.round(data_obs_ins, 2) 
 #data_obs_ins =np.flip(data_obs_ins, axis=1)
-
+# Interpolating the final channel
 t = np.linspace(0,1,np.shape(cl2[:,])[0]) 
 x_o = -cl2[:,1].flatten()          
 y_o = -cl2[:,0].flatten()           
@@ -112,7 +112,7 @@ data_obs = np.array([xnew_o,ynew_o])
 data_obs = np.flip(data_obs, axis=1)
 data_obs = np.round(data_obs, 1)
 # modelled
-
+# Interpolating the simulated channel
 t = np.linspace(0,1,np.shape(0.1*chb.channels[np.int(nit-1)].x)[0])
 x_m = 0.1*chb.channels[np.int(nit-1)].x
 y_m = 0.1*chb.channels[np.int(nit-1)].y
@@ -125,4 +125,68 @@ ynew_ms = ynew_m+np.random.normal(loc=0.0, scale= 0.1, size=1)
 xnew_ms = xnew_m+np.random.normal(loc=0.0, scale= 0.1, size=1)
 ynew_ms = ynew_m
 xnew_ms = xnew_m
+```
+
+Now, we are going to run Meanderpy multiple times for the Markov chain Monte Carlo (MCMC) algorithm. Because we need to interpolate the simulated channel for every single iteration, we will define a class that will run meanderpy and interpolate at the same time. 
+
+```ruby
+nit = 100                   
+depths = D * np.ones((nit,)) 
+pad = 0                 
+deltas = 50.0               
+crdist = 1.8 * W              
+kv =  1.0e-12             
+dt = 0.1*(365*24*60*60.0)    
+dens = 1000               
+saved_ts = 1              
+n_bends = 5              
+Sl = 0.0            
+t1 = 0                  
+t2 = 0                  
+t3 = 0      
+
+def hkm(parm):  
+    kl =  (parm[0]*10)/(365*24*60*60.0)  
+    Cfs = parm[1] * 0.001 * np.ones((nit,))
+    y=cl1[:,0]*10
+    x=cl1[:,1]*10
+    z=np.zeros(len(x))
+    H=depths[0]
+    
+    try:    
+        ch=mp.Channel(-x,-y,z,W,H)
+        chb=mp.ChannelBelt(channels=[ch], cutoffs=[], cl_times=[0.0], cutoff_times=[])
+        ch = mp.generate_initial_channel(W,D,Sl,deltas,pad,n_bends)
+        chb.migrate(nit,saved_ts,deltas,pad,crdist,depths,Cfs,kl,kv,dt,dens,t1,t2,t3,aggr_factor)
+        
+        if np.shape(0.1*chb.channels[np.int(nit-1)].x)[0] < 1000:
+            t = np.linspace(0,1,np.shape(0.1*chb.channels[np.int(nit-1)].x)[0])
+            x_m = 0.1*chb.channels[np.int(nit-1)].x
+            y_m = 0.1*chb.channels[np.int(nit-1)].y
+            fx_m = interpolate.interp1d(t,x_m)
+            fy_m = interpolate.interp1d(t, y_m)
+            tnew = np.linspace(0,1,1000)
+            xnew_m = fx_m(tnew) 
+            ynew_m = fy_m(tnew) 
+            xnew_m[:] = xnew_m[::-1] 
+            ynew_m[:] = ynew_m[::-1] 
+        
+        else:
+            t = np.linspace(0,1,1000)
+            xnew_m = np.zeros(1000) 
+            ynew_m = np.zeros(1000) 
+            ynew_m[:] = ynew_m[::-1] 
+            xnew_m[:] = xnew_m[::-1] 
+
+    except:
+        t = np.linspace(0,1,1000)
+        xnew_m = np.zeros(1000) 
+        ynew_m = np.zeros(1000) 
+        ynew_m[:] = ynew_m[::-1] 
+        xnew_m[:] = xnew_m[::-1] 
+        
+    return np.array([xnew_m,ynew_m])
+```
+
+```ruby
 ```
