@@ -27,6 +27,7 @@ import emcee
 import scipy.stats as stats   
 import matplotlib as mpl
 mpl.rcParams['figure.dpi'] = 500
+import seaborn as sns                   
 ```
 
 We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). Centerline data are available in [ChannelGeometry](https://github.com/snohatech/StatMeanderpy/tree/main/ChannelGeometry) folder. 
