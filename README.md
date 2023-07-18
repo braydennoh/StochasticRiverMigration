@@ -83,30 +83,30 @@ pd.DataFrame({"x":-cl1[:,1], "y":-cl1[:,0]}).plot.line(x='x', y='y', ax= ax, lab
 pd.DataFrame({"x":-cl2[:,1], "y":-cl2[:,0]}).plot.line(x='x', y='y', ax= ax, label='Final Channel (10 years)')
 ```
 
-Because the channel array data do not have the same amount of array lengths, we need to interpolate them to have the same length. 
+Because the channel array data do not have the same amount of array lengths, we need to interpolate them to have the same length. We are interpolating for 1000 lengths for initial (ch1) and final (ch2) channel centerlines. 
 
 ```ruby
-t = np.linspace(0,1,np.shape(cl1[:,])[0]) # create a new variable t 
-x_o = -cl1[:,1].flatten()            # get x-axis data
-y_o = -cl1[:,0].flatten()            # get y-axis data
-fx_o = interpolate.interp1d(t,x_o)      # initialize the interpolation class
+t = np.linspace(0,1,np.shape(cl1[:,])[0]) 
+x_o = -cl1[:,1].flatten()           
+y_o = -cl1[:,0].flatten()         
+fx_o = interpolate.interp1d(t,x_o)     
 fy_o = interpolate.interp1d(t, y_o)    
 tnew = np.linspace(0,1,1000)   
-xnew_o = fx_o(tnew) + np.random.normal(0,0.1,1000)  # get interpolated x values
-ynew_o = fy_o(tnew) + np.random.normal(0,0.1,1000)# create a finer t-variable spacing 
+xnew_o = fx_o(tnew) + np.random.normal(0,0.1,1000)  
+ynew_o = fy_o(tnew) + np.random.normal(0,0.1,1000)
 xnew_o = fx_o(tnew)   # get interpolated x values
 ynew_o = fy_o(tnew)   # get interpolated y values
 data_obs_ins = np.array([xnew_o,ynew_o])
 data_obs_ins = np.round(data_obs_ins, 2) 
 #data_obs_ins =np.flip(data_obs_ins, axis=1)
 
-t = np.linspace(0,1,np.shape(cl2[:,])[0]) # create a new variable t 
-x_o = -cl2[:,1].flatten()            # get x-axis data
-y_o = -cl2[:,0].flatten()            # get y-axis data
-fx_o = interpolate.interp1d(t,x_o)      # initialize the interpolation class
+t = np.linspace(0,1,np.shape(cl2[:,])[0]) 
+x_o = -cl2[:,1].flatten()          
+y_o = -cl2[:,0].flatten()           
+fx_o = interpolate.interp1d(t,x_o)    
 fy_o = interpolate.interp1d(t, y_o)    
-tnew = np.linspace(0,1,1000)           # create a finer t-variable spacing 
-xnew_o = fx_o(tnew)                     # get interpolated x values
+tnew = np.linspace(0,1,1000)          
+xnew_o = fx_o(tnew)                   
 ynew_o = fy_o(tnew)
 data_obs = np.array([xnew_o,ynew_o])
 data_obs = np.flip(data_obs, axis=1)
