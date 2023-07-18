@@ -127,7 +127,7 @@ ynew_ms = ynew_m
 xnew_ms = xnew_m
 ```
 
-Now, we are going to run Meanderpy multiple times for the Markov chain Monte Carlo (MCMC) algorithm. Because we need to interpolate the simulated channel for every single iteration, we will define a class that will run meanderpy and interpolate at the same time. 
+Now, we are going to run Meanderpy multiple times for the Markov chain Monte Carlo (MCMC) algorithm. Meanderpy has lots of variables! For our example, we are only going to vary migration rate (kl) and chezy friction factor (Cfs). Because we need to interpolate the simulated channel for every single iteration, we will define a class that will run meanderpy and interpolate at the same time. 
 
 ```ruby
 nit = 100                   
@@ -188,5 +188,59 @@ def hkm(parm):
     return np.array([xnew_m,ynew_m])
 ```
 
+Now we are going to calculate the channel difference between the simulation and the final channel. This is our error difference, which is calculate by the difference in x and y coordinate points. We first define the prior, likelyhood, and posterior for MCMC, and for given 
+```ruby
+def log_prior(par):
+    
+    if  10 < par[0] < 50 and 0 < par[1] < 30 and 0.01 < par[2] < 10:  
+        return -par[2]/1                                               
+    else:
+        return -np.inf
+    
+def log_lik(par,data):
+    print(par)
+    sim = hkm(parm=par[:2])
+    
+    x_err = sim[0,:]-data[0,:][::-1]
+    y_err = sim[1,:]-data[1,:][::-1]
+    plt.plot(x_err) 
+    plt.plot(y_err) 
+
+    y_fft = np.fft.fft(y_err)  
+    x_fft = np.fft.fft(x_err) 
+    
+    y_amp1 = 2*abs(y_fft.real/y_fft.size)    
+    y_amp2 = 2*abs(y_fft.imag/y_fft.size)     
+    x_amp1 = 2*abs(x_fft.real/x_fft.size)    
+    x_amp2 = 2*abs(x_fft.imag/x_fft.size)    
+    
+    amp = np.array([y_amp1,y_amp2,x_amp1,x_amp2]) 
+    
+    return np.sum(np.log(stats.norm.pdf(amp, loc=0, scale=par[2])))
+
+def log_post(par, data):
+    par = np.around(par, decimals = 0)
+    print (par)
+    if (log_prior(par)==-np.inf):
+        lp = log_prior(par)
+    else: 
+        lp = log_lik(par,data)+ log_prior(par)
+    return lp  
+
+#test run [kl, Cfs, error term]
+log_post([15,20 ,1],data_obs)
+```
+
+
+
+
+```ruby
+```
+```ruby
+```
+```ruby
+```
+```ruby
+```
 ```ruby
 ```
