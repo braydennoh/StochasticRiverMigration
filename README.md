@@ -15,7 +15,7 @@ River migration can be predicted using a similar approach to weather forecasting
 
 First, import the library:
 
-```
+```ruby
 import numpy as np
 import os
 import matplotlib.pyplot as plt
@@ -24,7 +24,7 @@ import meanderpy as mp
 
 We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). Centerline data are available in [ChannelGeometry](https://github.com/snohatech/StatMeanderpy/tree/main/ChannelGeometry) folder. 
 
-```
+```ruby
 os.chdir(r"/Users/StatMeanderpyGithub/ChannelGeometry/1Bend")
 cl1=np.loadtxt('0year.txt',delimiter=' ')
 cl2=np.loadtxt('10year.txt',delimiter=' ')
