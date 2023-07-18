@@ -22,12 +22,19 @@ import matplotlib.pyplot as plt
 import meanderpy as mp
 ```
 
-We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196).
+We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). Centerline data are available in [ChannelGeometry](https://github.com/snohatech/StatMeanderpy/tree/main/ChannelGeometry) folder. 
+
 ```
-import numpy as np
-import os
-import matplotlib.pyplot as plt
-import meanderpy as mp
+os.chdir(r"/Users/StatMeanderpyGithub/ChannelGeometry/1Bend")
+cl1=np.loadtxt('0year.txt',delimiter=' ')
+cl2=np.loadtxt('10year.txt',delimiter=' ')
+
+xin = cl1[:,1][::-1]
+yin = cl1[:,0][::-1]
+xfi= cl2[:,1][::-1]
+yfi = cl2[:,0][::-1]
+plt.plot(xin,yin,label = 'Initial Channel')
+plt.plot(xfi,yfi,label = 'Final Channel')
 ```
 
 
