@@ -405,6 +405,7 @@ for i in np.random.randint(0, 50, 10):
 pd.DataFrame({"x":sim[0,:], "y":sim[1,:]}).plot.line(x='x', y='y', ax= ax, color='red',label="probabilistic prediction (5 years)")
 pd.DataFrame({"x":clfi[:,1], "y":clfi[:,0]}).plot.line(x='x', y='y', ax= ax, label='final actual (5 years)',color='black',lw=4)
 ```
+<img src="https://github.com/snohatech/StatMeanderpy/blob/main/JupyterNotebook/Img/3.png" width="1000" height="600">
 
 Based on the posterior distribution parameter results, create the risk map based on the counting algorithm. 
 ```ruby
@@ -434,5 +435,5 @@ pd.DataFrame({"x":-cl2[:,1]+800, "y":-cl2[:,0]+800}).plot.line(x='x', y='y',   c
 plt.legend(frameon=False,labelcolor='white',loc="upper left")
 plt.legend('',frameon=False)
 ```
-<img src="https://github.com/snohatech/StatMeanderpy/blob/main/JupyterNotebook/Img/3.png" width="1000" height="1000">
+<img src="https://github.com/snohatech/StatMeanderpy/blob/main/JupyterNotebook/Img/4.png" width="1000" height="1000">
 
