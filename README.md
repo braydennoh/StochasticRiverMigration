@@ -377,7 +377,6 @@ for i in np.random.randint(0, 50, 10):
         #ax1.plot(x[idx], y[idx], 'ro')
         intersection = sim[0,idx]
         intersection_obs = data_obs_ins[0,idx_obs]
-
         
         #ax1.set_xticks(np.arange(-20, 21, 2))
         #ax1.set_yticks(np.arange(-20, 21, 2))   
