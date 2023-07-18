@@ -21,7 +21,9 @@ import os
 import matplotlib.pyplot as plt
 import meanderpy as mp     
 import pandas as pd
-from scipy import interpolate          
+from scipy import interpolate
+from scipy.stats import truncnorm
+import emcee         
 ```
 
 We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). Centerline data are available in [ChannelGeometry](https://github.com/snohatech/StatMeanderpy/tree/main/ChannelGeometry) folder. 
@@ -231,10 +233,33 @@ def log_post(par, data):
 log_post([15,20 ,1],data_obs)
 ```
 
-
-
+Now let's run MCMC using EMCEE.
 
 ```ruby
+def get_truncated_normal(mean=0, sd=1, low=0, upp=10):
+    return truncnorm(
+        (low - mean) / sd, (upp - mean) / sd, loc=mean, scale=sd)
+
+ndim, nwalkers = 3, 50
+
+X1 = get_truncated_normal(mean=15, sd=10, low=1, upp=40)
+X2 = get_truncated_normal(mean=10, sd=10, low=1, upp=20)
+X3 = get_truncated_normal(mean=2, sd=1, low=1, upp=5)
+
+p0 = np.ones([nwalkers, ndim])
+p0[:,0] = X1.rvs(size = nwalkers)
+p0[:,1] = X2.rvs(size = nwalkers)
+p0[:,2] = X3.rvs(size = nwalkers)
+sampler = emcee.EnsembleSampler(nwalkers, ndim, log_post, args = [data_obs])
+
+samples_runs = 50
+
+sampler = emcee.EnsembleSampler(nwalkers, ndim, log_post, args = [data_obs])
+sampler.run_mcmc(p0, samples_runs) 
+samp = sampler.get_chain()
+
+samp_reshaped = samp.reshape(samp.shape[0], -1) #so that the 3D array is reshaped as 2D, to save it 
+np.savetxt('samples_emcee.txt',samp_reshaped, delimiter=',')
 ```
 ```ruby
 ```
