@@ -87,7 +87,7 @@ pd.DataFrame({"x":-cl1[:,1], "y":-cl1[:,0]}).plot.line(x='x', y='y', ax= ax, lab
 pd.DataFrame({"x":-cl2[:,1], "y":-cl2[:,0]}).plot.line(x='x', y='y', ax= ax, label='Final Channel (10 years)')
 ```
 
-Because the channel array data do not have the same amount of array lengths, we need to interpolate them to have the same length. We are interpolating for 1000 lengths for initial (ch1) and final (ch2) channel centerlines. 
+Because the channel array data do not have the same amount of array lengths, we need to interpolate them to have the same length. We are interpolating for 1000 lengths for initial (ch1), final (ch2) channel, and simulation (chb.channels) centerlines. 
 
 ```ruby
 # Interpolating the initial channel
