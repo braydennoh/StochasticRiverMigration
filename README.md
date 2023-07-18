@@ -135,6 +135,8 @@ ynew_ms = ynew_m
 xnew_ms = xnew_m
 ```
 
+<img src="https://github.com/snohatech/StatMeanderpy/blob/main/JupyterNotebook/Img/2.png" width="1000" height="600">
+
 Now, we are going to run Meanderpy multiple times for the Markov chain Monte Carlo (MCMC) algorithm. Meanderpy has lots of variables! For our example, we are only going to vary migration rate (kl) and chezy friction factor (Cfs). Because we need to interpolate the simulated channel for every single iteration, we will define a class that will run meanderpy and interpolate at the same time. 
 
 ```ruby
