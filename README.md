@@ -435,5 +435,5 @@ pd.DataFrame({"x":-cl2[:,1]+800, "y":-cl2[:,0]+800}).plot.line(x='x', y='y',   c
 plt.legend(frameon=False,labelcolor='white',loc="upper left")
 plt.legend('',frameon=False)
 ```
-<img src="https://github.com/snohatech/StatMeanderpy/blob/main/JupyterNotebook/Img/4.png" width="800" height="700">
+<img src="https://github.com/snohatech/StatMeanderpy/blob/main/JupyterNotebook/Img/4.png" width="800" height="750">
 
