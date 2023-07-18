@@ -23,13 +23,16 @@ import meanderpy as mp
 import pandas as pd
 from scipy import interpolate
 from scipy.stats import truncnorm
-import emcee         
+import emcee  
+import scipy.stats as stats   
+import matplotlib as mpl
+mpl.rcParams['figure.dpi'] = 500
 ```
 
 We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). Centerline data are available in [ChannelGeometry](https://github.com/snohatech/StatMeanderpy/tree/main/ChannelGeometry) folder. 
 
 ```ruby
-os.chdir(r"/Users/StatMeanderpyGithub/ChannelGeometry/1Bend")
+os.chdir(r"/Users/StatMeanderpyGithub/ChannelGeometry/2Bends")
 cl1=np.loadtxt('0year.txt',delimiter=' ')
 cl2=np.loadtxt('10year.txt',delimiter=' ')
 
@@ -96,11 +99,10 @@ fy_o = interpolate.interp1d(t, y_o)
 tnew = np.linspace(0,1,1000)   
 xnew_o = fx_o(tnew) + np.random.normal(0,0.1,1000)  
 ynew_o = fy_o(tnew) + np.random.normal(0,0.1,1000)
-xnew_o = fx_o(tnew)   # get interpolated x values
-ynew_o = fy_o(tnew)   # get interpolated y values
+xnew_o = fx_o(tnew)
+ynew_o = fy_o(tnew)  
 data_obs_ins = np.array([xnew_o,ynew_o])
 data_obs_ins = np.round(data_obs_ins, 2) 
-#data_obs_ins =np.flip(data_obs_ins, axis=1)
 # Interpolating the final channel
 t = np.linspace(0,1,np.shape(cl2[:,])[0]) 
 x_o = -cl2[:,1].flatten()          
@@ -111,9 +113,7 @@ tnew = np.linspace(0,1,1000)
 xnew_o = fx_o(tnew)                   
 ynew_o = fy_o(tnew)
 data_obs = np.array([xnew_o,ynew_o])
-data_obs = np.flip(data_obs, axis=1)
 data_obs = np.round(data_obs, 1)
-# modelled
 # Interpolating the simulated channel
 t = np.linspace(0,1,np.shape(0.1*chb.channels[np.int(nit-1)].x)[0])
 x_m = 0.1*chb.channels[np.int(nit-1)].x
@@ -240,7 +240,7 @@ def get_truncated_normal(mean=0, sd=1, low=0, upp=10):
     return truncnorm(
         (low - mean) / sd, (upp - mean) / sd, loc=mean, scale=sd)
 
-ndim, nwalkers = 3, 50
+ndim, nwalkers = 3, 10
 
 X1 = get_truncated_normal(mean=15, sd=10, low=1, upp=40)
 X2 = get_truncated_normal(mean=10, sd=10, low=1, upp=20)
@@ -252,7 +252,7 @@ p0[:,1] = X2.rvs(size = nwalkers)
 p0[:,2] = X3.rvs(size = nwalkers)
 sampler = emcee.EnsembleSampler(nwalkers, ndim, log_post, args = [data_obs])
 
-samples_runs = 50
+samples_runs = 5
 
 sampler = emcee.EnsembleSampler(nwalkers, ndim, log_post, args = [data_obs])
 sampler.run_mcmc(p0, samples_runs) 
@@ -260,12 +260,167 @@ samp = sampler.get_chain()
 
 samp_reshaped = samp.reshape(samp.shape[0], -1) #so that the 3D array is reshaped as 2D, to save it 
 np.savetxt('samples_emcee.txt',samp_reshaped, delimiter=',')
+
+sampsubset = samp[0:samples_runs,:,:]
+samp2d = sampsubset.reshape(sampsubset.shape[0]*sampsubset.shape[1],3)
+samp2d.shape
+samp2d
 ```
+
+Now based on the posterior parameter distribution, generate random sets of meanderpy simulation channels. For this example, we are using 10 parameter distributions (for i in np.random.randint(0, 50, 10)) and the risk map will be made with a 800x800 meshgrid, in which each grid will count whether the simulated channel has crossed the grid or not. 
+
 ```ruby
+clin=-cl1+1000
+clfi=-cl2+1000
+
+t = np.linspace(0,1,np.shape(clin[:,])[0]) 
+x_o = clin[:,1].flatten()          
+y_o = clin[:,0].flatten()           
+fx_o = interpolate.interp1d(t,x_o)     
+fy_o = interpolate.interp1d(t, y_o)    
+tnew = np.linspace(0,1,10000)                       
+xnew_o = fx_o(tnew) + np.random.normal(0,0.2,10000) 
+ynew_o = fy_o(tnew) + np.random.normal(0,0.2,10000) 
+data_obs_ins = np.array([xnew_o,ynew_o])
+data_obs_ins = np.round(data_obs_ins, 5) 
+data_obs_ins = np.flip(data_obs_ins, axis=1)      
+
+nit = 50                  
+depths = D * np.ones((nit,)) 
+pad = 0                 
+deltas = 50.0               
+crdist = 1.8 * W              
+kv =  1.0e-12             
+dt = 0.1*(365*24*60*60.0)    
+dens = 1000               
+saved_ts = 1              
+n_bends = 5              
+Sl = 0.0            
+t1 = 0                  
+t2 = 0                  
+t3 = 0               
+def hkm_predict(parm):
+    kl =  (parm[0]*10)/(365*24*60*60.0)     
+    Cfs = parm[1]*0.001 * np.ones((nit,)) 
+    y=cl1[:,0]*10
+    x=cl1[:,1]*10
+    z=np.zeros(len(x))
+    H=depths[0]
+    try:   
+        ch=mp.Channel(-x,-y,z,W,H)
+        chb=mp.ChannelBelt(channels=[ch], cutoffs=[], cl_times=[0.0], cutoff_times=[])
+        ch = mp.generate_initial_channel(W,D,Sl,deltas,pad,n_bends) # initialize channel
+        chb.migrate(nit,saved_ts,deltas,pad,crdist,depths,Cfs,kl,kv,dt,dens,t1,t2,t3,aggr_factor) # channel migration
+
+        if np.shape(0.1*chb.channels[np.int(nit-1)].x)[0] < 10000:
+            t = np.linspace(0,1,np.shape(0.1*chb.channels[np.int(nit-1)].x)[0])
+            x_m = (0.1*chb.channels[np.int(nit-1)].x)+1000
+            y_m = (0.1*chb.channels[np.int(nit-1)].y)+1000
+            fx_m = interpolate.interp1d(t,x_m)
+            fy_m = interpolate.interp1d(t, y_m)
+            tnew = np.linspace(0,1,10000)
+            xnew_m = fx_m(tnew)
+            ynew_m = fy_m(tnew)
+        
+        else:
+            t = np.linspace(0,1,10000)
+            xnew_m = np.zeros(10000)
+            ynew_m = np.zeros(10000)
+    
+    except:
+        t = np.linspace(0,1,10000)
+        xnew_m = np.zeros(10000)
+        ynew_m = np.zeros(10000)
+        
+    return np.array( [xnew_m,ynew_m])
+
+yss = np.zeros([10000,1000])
+del_x = np.linspace(0,1,10000)
+for i in range(0,1000):
+    yss[:,i]= 1*(np.random.normal(0,1,1)*np.cos(2*np.pi*del_x)+np.random.normal(0,1,1)*np.sin(2*np.pi*del_x))
+    
+sc=1/1
+counts = np.zeros((int(sc*800), int(sc*800)))     #create variables to store the information abt counts
+prob = np.zeros((int(sc*800), int(sc*800)))       #create variables to store the information abt proability
+counts_obs = np.zeros((int(sc*800),int(sc*800)))  #create variables to store the information abt counts
+prob_obs = np.zeros((int(sc*800), int(sc*800)))   #create variables to store the information abt proability
+ax = pd.DataFrame({"x":clin[:,1], "y":clin[:,0]}).plot.line(x='x', y='y', label='initial actual (0 years)', color='gray',lw=4)
+ax.set_xlabel("x (--)")
+ax.set_ylabel("y (--)")
+ax.set_title("5-year prediction for Ucayali River")
+
+for i in np.random.randint(0, 50, 10):
+    samplenew = samp2d[i,:2]
+    sim = hkm_predict(samplenew)
+    erx = samp2d[i,2]*(np.random.normal(0,2,1)*np.cos(2*np.pi*del_x)+np.random.normal(0,2,1)*np.sin(2*np.pi*del_x))
+    ery = samp2d[i,2]*(np.random.normal(0,2,1)*np.cos(2*np.pi*del_x)+np.random.normal(0,2,1)*np.sin(2*np.pi*del_x))
+     # add the functions to HK model runs
+    sim[0,:] = sim[0,:] + erx
+    sim[1,:] = sim[1,:] + ery
+    x = sim[0,:]
+    y = sim[1,:]
+    asdf = np.array([x,y])
+    
+    np.savetxt('samples_emcee.txt',asdf, delimiter=',')
+
+    pd.DataFrame({"x":sim[0,:], "y":sim[1,:]}).plot.line(x='x', y='y', ax= ax, color='red',label='_Hidden')
+    
+    for j in range(0,int(sc*800)):
+        # get the x-values of the river corresponding to the y-value of a certain
+        # horizontal line
+        idx = np.argwhere(np.diff(np.sign(sim[1,:] - np.arange(200,1000,1/sc)[j]))).flatten() 
+        idx_obs = np.argwhere(np.diff(np.sign(data_obs_ins[1,:] - np.arange(200,1000,1/sc)[j]))).flatten() 
+        
+        #ax1.plot(x[idx], y[idx], 'ro')
+        intersection = sim[0,idx]
+        intersection_obs = data_obs_ins[0,idx_obs]
+
+        
+        #ax1.set_xticks(np.arange(-20, 21, 2))
+        #ax1.set_yticks(np.arange(-20, 21, 2))   
+
+        for k in range(0,int(sc*800)):
+            # count the intersection points on the left side of the grid cell
+            counts[k,j]= np.shape(intersection[intersection<=np.arange(200,1000,1/sc)[k]])[0]
+            counts_obs[k,j]= np.shape(intersection_obs[intersection_obs<=np.arange(200,1000,1/sc)[k]])[0]
+    
+    counts = np.absolute(counts-counts_obs)
+    #counts = (counts-counts_obs)
+    counts[counts%2 == 1] = 1 # erosion happened i.e. = 1 if count number even
+    counts[counts%2 == 0] = 0 # no erosion i.e. = 0 if count number off
+    #counts[counts != 0] = 1 # erosion happened i.e. = 1 if count number even
+    
+    prob = prob + counts  # add up all the "monte carlo" runs that pass the grid cell
+    
+pd.DataFrame({"x":sim[0,:], "y":sim[1,:]}).plot.line(x='x', y='y', ax= ax, color='red',label="probabilistic prediction (5 years)")
+pd.DataFrame({"x":clfi[:,1], "y":clfi[:,0]}).plot.line(x='x', y='y', ax= ax, label='final actual (5 years)',color='black',lw=4)
 ```
+
+Based on the posterior distribution parameter results, create the risk map based on the counting algorithm. 
 ```ruby
-```
-```ruby
-```
-```ruby
+prob = prob/5
+  
+y, x = np.meshgrid(np.arange(0,800,1/sc), np.arange(0,800,1/sc))
+
+z = prob
+
+z_min, z_max = 0, np.abs(z).max()
+
+fig, ax = plt.subplots(figsize=(4,4))
+
+c = ax.pcolormesh(x, y, z, cmap="coolwarm", vmin=z_min, vmax=z_max)
+fig.colorbar(c, ax=ax)
+fig.legend('',frameon=False)
+#plt.xlim([420, 760])
+#plt.ylim([280, 620])
+
+mpl.rcParams.update({'text.color' : "white",
+                     'axes.labelcolor' : "blue"})
+
+d = z.ravel()
+plt.axis('off')
+pd.DataFrame({"x":-cl1[:,1]+800, "y":-cl1[:,0]+800}).plot.line(x='x', y='y', ax= ax,  color='navy',lw = 2,alpha=0.3,label='initial actual (0 years)')
+pd.DataFrame({"x":-cl2[:,1]+800, "y":-cl2[:,0]+800}).plot.line(x='x', y='y',   color='#00BFFF',lw = 2,alpha=0.3,ax= ax,label='final actual (5 years)')
+plt.legend(frameon=False,labelcolor='white',loc="upper left")
+plt.legend('',frameon=False)
 ```
