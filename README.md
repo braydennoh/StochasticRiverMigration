@@ -15,7 +15,9 @@ River migration can be predicted using a similar approach to weather forecasting
 
 First, import the library:
 
-<code>import numpy as np
-import os<code>
+```
+import numpy as np
+import os
+```
 
 
