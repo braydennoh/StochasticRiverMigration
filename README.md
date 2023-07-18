@@ -188,10 +188,10 @@ def hkm(parm):
     return np.array([xnew_m,ynew_m])
 ```
 
-Now we are going to calculate the channel difference between the simulation and the final channel. This is our error difference, which is calculate by the difference in x and y coordinate points. We first define the prior, likelyhood, and posterior for MCMC, and for given 
+Now we are going to calculate the channel difference between the simulation and the final channel. This is our error difference, which is calculate by the difference in x and y coordinate points. We first define the prior, likelyhood, and posterior for MCMC, and for given input (test run), it will output the error difference between the simulation and the final channel geometry.
 ```ruby
 def log_prior(par):
-    
+    # par[0] is migration rate (kl) par[1] is chezy friction factor (Cfs) and par[2] is error term
     if  10 < par[0] < 50 and 0 < par[1] < 30 and 0.01 < par[2] < 10:  
         return -par[2]/1                                               
     else:
