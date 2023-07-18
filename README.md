@@ -191,6 +191,7 @@ def hkm(parm):
 ```
 
 Now we are going to calculate the channel difference between the simulation and the final channel. This is our error difference, which is calculate by the difference in x and y coordinate points. We first define the prior, likelyhood, and posterior for MCMC, and for given input (test run), it will output the error difference between the simulation and the final channel geometry.
+
 ```ruby
 def log_prior(par):
     # par[0] is migration rate (kl) par[1] is chezy friction factor (Cfs) and par[2] is error term
@@ -233,7 +234,7 @@ def log_post(par, data):
 log_post([15,20 ,1],data_obs)
 ```
 
-Now let's run MCMC using EMCEE.
+Now let's run MCMC using EMCEE. For this example, we are only using 10 nwalkers and sample_runs = 5, which is for demonstration purposes only. To produce useful posterior, the run number should be much greater. 
 
 ```ruby
 def get_truncated_normal(mean=0, sd=1, low=0, upp=10):
@@ -267,7 +268,7 @@ samp2d.shape
 samp2d
 ```
 
-Now based on the posterior parameter distribution, generate random sets of meanderpy simulation channels. For this example, we are using 10 parameter distributions (for i in np.random.randint(0, 50, 10)) and the risk map will be made with a 800x800 meshgrid, in which each grid will count whether the simulated channel has crossed the grid or not. 
+Now based on the posterior parameter distribution, generate random sets of meanderpy simulation channels. For this example, we are using 10 parameter distributions or for i in np.random.randint(0, 50, 10). The distribution can be increased with increasing number of MCMC runs. Risk map will be made with a 800x800 meshgrid, in which each grid will count whether the simulated channel has crossed the grid or not. 
 
 ```ruby
 clin=-cl1+1000
@@ -298,7 +299,8 @@ n_bends = 5
 Sl = 0.0            
 t1 = 0                  
 t2 = 0                  
-t3 = 0               
+t3 = 0
+          
 def hkm_predict(parm):
     kl =  (parm[0]*10)/(365*24*60*60.0)     
     Cfs = parm[1]*0.001 * np.ones((nit,)) 
@@ -306,6 +308,7 @@ def hkm_predict(parm):
     x=cl1[:,1]*10
     z=np.zeros(len(x))
     H=depths[0]
+
     try:   
         ch=mp.Channel(-x,-y,z,W,H)
         chb=mp.ChannelBelt(channels=[ch], cutoffs=[], cl_times=[0.0], cutoff_times=[])
@@ -398,7 +401,7 @@ pd.DataFrame({"x":clfi[:,1], "y":clfi[:,0]}).plot.line(x='x', y='y', ax= ax, lab
 
 Based on the posterior distribution parameter results, create the risk map based on the counting algorithm. 
 ```ruby
-prob = prob/5
+prob = prob/10
   
 y, x = np.meshgrid(np.arange(0,800,1/sc), np.arange(0,800,1/sc))
 
