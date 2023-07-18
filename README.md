@@ -15,7 +15,7 @@ River migration can be predicted using a similar approach to weather forecasting
 
 First, import the library:
 
-```ruby
+```
 import numpy as np
 import os
 import matplotlib.pyplot as plt
@@ -37,5 +37,30 @@ plt.plot(xin,yin,label = 'Initial Channel')
 plt.plot(xfi,yfi,label = 'Final Channel')
 ```
 
+Defining parameters:
 
-
+```ruby
+nit = 100                    # number of iterations
+W = 100.0                    # channel width (m)
+D = 10.0                      # channel depth (m)
+depths = D * np.ones((nit,))  # channel depths for different iterations  
+pad = 0# padding (number of nodepoints along centerline)
+deltas = 50.0                # sampling distance along centerline           
+Cfs = 0.02 * np.ones((nit,))
+crdist = 1.8 * W               # threshold distance at which cutoffs occur
+kl = 200/(365*24*60*60.0)   # migration rate constant (m/s)
+kv =  1.0e-12               # vertical slope-dependent erosion rate constant (m/s)
+dt = 0.1*(365*24*60*60.0)      # time step (s)
+dens = 1000                  # density of water (kg/m3)
+saved_ts = 1                # which time steps will be saved
+Sl = 0.0                     # initial slope (matters more for submarine channels than rivers)
+t1 = 0                    # time step when incision starts
+t2 = 0                    # time step when lateral migration starts
+t3 = 0     
+aggr_factor = 2e-9            # aggradation factor (m/s, about 0.18 m/year, it kicks in after t3) after t3)
+sc = 1.0
+y=cl1[:,0]*10
+x=cl1[:,1]*10
+z=np.zeros(len(x))
+H=depths[0]
+```
