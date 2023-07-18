@@ -18,6 +18,17 @@ First, import the library:
 ```
 import numpy as np
 import os
+import matplotlib.pyplot as plt
+import meanderpy as mp
 ```
+
+We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP]([https://meetingorganizer.copernicus.org/EGU23/EGU23-17240.html](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196)).
+```
+import numpy as np
+import os
+import matplotlib.pyplot as plt
+import meanderpy as mp
+```
+
 
 
