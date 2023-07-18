@@ -1,8 +1,8 @@
 # StatMeanderpy
 
 <p align="center">
-  <img src="https://github.com/snohatech/StatMeanderpy/blob/main/ReadMeFigs/1bend.gif" alt="GIF 1" width="400" />
-  <img src="images/gif2.gif" alt="GIF 2" width="400" />
+  <img src="https://github.com/snohatech/StatMeanderpy/blob/main/ReadMeFigs/2bend.gif" alt="GIF 1" width="400" />
+  <img src="https://github.com/snohatech/StatMeanderpy/blob/main/ReadMeFigs/3bend.gif" alt="GIF 2" width="400" />
 </p>
 
 StatMeanderpy is a deriviation of Meanderpy (https://github.com/zsylvester/meanderpy) developed by Zoltán Sylvester, which  implements a simple numerical model of river meandering, the one described by Howard & Knutson in their 1984 paper ["Sufficient Conditions for River Meandering: A Simulation Approach"](https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/WR020i011p01659).
