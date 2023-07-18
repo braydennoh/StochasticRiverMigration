@@ -276,7 +276,7 @@ samp2d.shape
 samp2d
 ```
 
-Now based on the posterior parameter distribution, generate random sets of meanderpy simulation channels. For this example, we are using 10 parameter distributions. The distribution can be increased with increasing number of MCMC runs. Risk map will be made with a 800x800 meshgrid, in which each grid will count whether the simulated channel has crossed the grid or not. 
+Now based on the posterior parameter distribution, generate random sets of meanderpy simulation channels. nit is the iteration time (50 = 5 years). For this example, we are using 10 parameter distributions. The distribution can be increased with increasing number of MCMC runs. Risk map will be made with a 800x800 meshgrid, in which each grid will count whether the simulated channel has crossed the grid or not. 
 
 ```ruby
 clin=-cl1+1000
