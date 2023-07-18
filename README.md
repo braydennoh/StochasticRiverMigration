@@ -13,7 +13,7 @@ River migration can be predicted using a similar approach to weather forecasting
 
 ## Usage
 
-Here is the [example file](https://github.com/snohatech/StatMeanderpy/tree/main/JupyterNotebook). Instruction are below. 
+Here is the [example file](https://github.com/snohatech/StatMeanderpy/tree/main/JupyterNotebook). Instructions are below. 
 
 First, import the library:
 
