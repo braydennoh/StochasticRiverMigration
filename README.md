@@ -19,7 +19,9 @@ First, import the library:
 import numpy as np
 import os
 import matplotlib.pyplot as plt
-import meanderpy as mp
+import meanderpy as mp     
+import pandas as pd
+from scipy import interpolate          
 ```
 
 We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). Centerline data are available in [ChannelGeometry](https://github.com/snohatech/StatMeanderpy/tree/main/ChannelGeometry) folder. 
@@ -40,27 +42,43 @@ plt.plot(xfi,yfi,label = 'Final Channel')
 Defining parameters:
 
 ```ruby
-nit = 100                    # number of iterations
-W = 100.0                    # channel width (m)
-D = 10.0                      # channel depth (m)
-depths = D * np.ones((nit,))  # channel depths for different iterations  
-pad = 0# padding (number of nodepoints along centerline)
-deltas = 50.0                # sampling distance along centerline           
-Cfs = 0.02 * np.ones((nit,))
-crdist = 1.8 * W               # threshold distance at which cutoffs occur
-kl = 200/(365*24*60*60.0)   # migration rate constant (m/s)
-kv =  1.0e-12               # vertical slope-dependent erosion rate constant (m/s)
-dt = 0.1*(365*24*60*60.0)      # time step (s)
-dens = 1000                  # density of water (kg/m3)
-saved_ts = 1                # which time steps will be saved
-Sl = 0.0                     # initial slope (matters more for submarine channels than rivers)
-t1 = 0                    # time step when incision starts
-t2 = 0                    # time step when lateral migration starts
-t3 = 0     
-aggr_factor = 2e-9            # aggradation factor (m/s, about 0.18 m/year, it kicks in after t3) after t3)
+nit = 100                         # number of iterations
+W = 100.0                         # channel width (m)
+D = 10.0                          # channel depth (m)
+depths = D * np.ones((nit,))      # channel depths for different iterations  
+pad = 0                           # padding (number of nodepoints along centerline)
+deltas = 50.0                     # sampling distance along centerline           
+Cfs = 0.02 * np.ones((nit,))      #chezy friction factor
+crdist = 1.8 * W                  # threshold distance at which cutoffs occur
+kl = 200/(365*24*60*60.0)         # migration rate constant (m/s)
+kv =  1.0e-12                     # vertical slope-dependent erosion rate constant (m/s)
+dt = 0.1*(365*24*60*60.0)         # time step (s)
+dens = 1000                       # density of water (kg/m^3)
+saved_ts = 1                      # which time steps will be saved
+Sl = 0.0                          # initial slope (matters more for submarine channels than rivers)
+t1 = 0                            # time step when incision starts
+t2 = 0                            # time step when lateral migration starts
+t3 = 1200                         # time step when aggradation starts
+aggr_factor = 2e-9                # aggradation factor (m/s, about 0.18 m/year, it kicks in after t3) after t3)
 sc = 1.0
-y=cl1[:,0]*10
-x=cl1[:,1]*10
-z=np.zeros(len(x))
-H=depths[0]
+x=cl1[:,1]*10                     # initial x channel geometry
+y=cl1[:,0]*10                     # initial y channel geometry
+z=np.zeros(len(x))                # initial z (0)
+H=depths[0]                       # no height in channel
+```
+
+Meanderpy will use the initial channel geometry to migrate the channel with the defined parameters. 
+
+```ruby
+ch=mp.Channel(-x,-y,z,W,H)
+chb=mp.ChannelBelt(channels=[ch], cutoffs=[], cl_times=[0.0], cutoff_times=[])
+chb.migrate(nit,saved_ts,deltas,pad,crdist,depths,Cfs,kl,kv,dt,dens,t1,t2,t3,aggr_factor) # channel migration
+channel_coordinate = pd.DataFrame({"x":chb.channels[nit-1].x, "y":chb.channels[nit-1].y, "Z":chb.channels[nit-1].z}) # the way it work is this: chb.channels[i].x will give you the x coordinates for the ith time step
+
+simx = 0.1*chb.channels[np.int(nit-1)].x
+simy = 0.1*chb.channels[np.int(nit-1)].y
+
+ax = pd.DataFrame({"x":simx, "y":simy}).plot.line(x='x', y='y', label='Simulation Result')
+pd.DataFrame({"x":-cl1[:,1], "y":-cl1[:,0]}).plot.line(x='x', y='y', ax= ax, label='Initial Channel (0 years)')
+pd.DataFrame({"x":-cl2[:,1], "y":-cl2[:,0]}).plot.line(x='x', y='y', ax= ax, label='Final Channel (10 years)')
 ```
