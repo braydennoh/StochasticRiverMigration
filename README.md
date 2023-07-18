@@ -47,7 +47,7 @@ plt.plot(xin,yin,label = 'Initial Channel')
 plt.plot(xfi,yfi,label = 'Final Channel')
 ```
 
-<img src="[IMAGE_URL](https://github.com/snohatech/StatMeanderpy/blob/main/JupyterNotebook/Img/1.png)" width="100" height="60">
+<img src="https://github.com/snohatech/StatMeanderpy/blob/main/JupyterNotebook/Img/1.png" width="300" height="180">
 
 
 Defining parameters:
