@@ -106,7 +106,8 @@ ynew_o = fy_o(tnew) + np.random.normal(0,0.1,1000)
 xnew_o = fx_o(tnew)
 ynew_o = fy_o(tnew)  
 data_obs_ins = np.array([xnew_o,ynew_o])
-data_obs_ins = np.round(data_obs_ins, 2) 
+data_obs_ins = np.round(data_obs_ins, 2)
+
 # Interpolating the final channel
 t = np.linspace(0,1,np.shape(cl2[:,])[0]) 
 x_o = -cl2[:,1].flatten()          
@@ -118,6 +119,7 @@ xnew_o = fx_o(tnew)
 ynew_o = fy_o(tnew)
 data_obs = np.array([xnew_o,ynew_o])
 data_obs = np.round(data_obs, 1)
+
 # Interpolating the simulated channel
 t = np.linspace(0,1,np.shape(0.1*chb.channels[np.int(nit-1)].x)[0])
 x_m = 0.1*chb.channels[np.int(nit-1)].x
