@@ -1,5 +1,7 @@
 # StochasticRiverMigration
 
+<img src="https://github.com/braydennoh/StochasticRiverMigration/blob/main/ReadMeFigs/evolution.gif">
+
 <p align="center">
   <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/1bend.gif" alt="GIF 1" width="22.5%" />
   <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/2bend.gif" alt="GIF 1" width="22.5%" />
