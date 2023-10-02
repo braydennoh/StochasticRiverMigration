@@ -2,14 +2,14 @@
 
 <img src="https://github.com/braydennoh/StochasticRiverMigration/blob/main/ReadMeFigs/evolution.gif">
 
+River migration can be predicted using a similar approach to weather forecasting. By employing probabilistic modeling techniques, we have developed MCMC-based river migration risk maps. For more details, you can refer to our [EGU conference paper here](https://meetingorganizer.copernicus.org/EGU23/EGU23-17240.html) here.
+
 <p align="center">
   <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/1bend.gif" alt="GIF 1" width="22.5%" />
   <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/2bend.gif" alt="GIF 1" width="22.5%" />
   <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/3bend.gif" alt="GIF 1" width="22.5%" />
   <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/4bend.gif" alt="GIF 1" width="22.5%" />
 </p>
-
-River migration can be predicted using a similar approach to weather forecasting. By employing probabilistic modeling techniques, we have developed MCMC-based river migration risk maps. For more details, you can refer to our [EGU conference paper here](https://meetingorganizer.copernicus.org/EGU23/EGU23-17240.html) here.
 
 ## Usage
 
