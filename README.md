@@ -34,6 +34,8 @@ import seaborn as sns
 
 We first need to define the river channel centerline. For this example, we are using the Ucayali River centerline collected for 40 years using [RivMAP](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). Centerline data are available to download in [ChannelGeometry](https://github.com/snohatech/StochasticRiverMigration/tree/main/ChannelGeometry) folder. 
 
+The centerline geometry are based on the paper [High spatiotemporal resolution of river planform dynamics from Landsat: The RivMAP toolbox and results from the Ucayali River](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016EA000196). 
+
 ```ruby
 os.chdir(r"/Users/StochasticRiverMigration/ChannelGeometry/2Bends") #directory of the github or the channel geometry folder
 cl1=np.loadtxt('0year.txt',delimiter=' ')
@@ -440,3 +442,7 @@ plt.legend('',frameon=False)
 <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/4.png" width="800" height="800">
 
 ### Developed by Brayden Noh and Omar Wani
+
+Howard, Alan D., and Thomas R. Knutson. "Sufficient conditions for river meandering: A simulation approach." Water Resources Research 20.11 (1984): 1659-1667.
+Sylvester, Zoltán, Paul Durkin, and Jacob A. Covault. "High curvatures drive river meandering." Geology 47.3 (2019): 263-266.
+Schwenk, Jon, et al. "High spatiotemporal resolution of river planform dynamics from Landsat: The RivMAP toolbox and results from the Ucayali River." Earth and Space Science 4.2 (2017): 46-75.
