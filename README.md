@@ -439,8 +439,20 @@ plt.legend('',frameon=False)
 ```
 <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/stat5.png" style="width: 500px; height: 350px;">
 
-### Developed by Brayden Noh and Omar Wani
+### Co-Developed by Brayden Noh and Omar Wani
 
-Howard, Alan D., and Thomas R. Knutson. "Sufficient conditions for river meandering: A simulation approach." Water Resources Research 20.11 (1984): 1659-1667.
-Sylvester, Zoltán, Paul Durkin, and Jacob A. Covault. "High curvatures drive river meandering." Geology 47.3 (2019): 263-266.
-Schwenk, Jon, et al. "High spatiotemporal resolution of river planform dynamics from Landsat: The RivMAP toolbox and results from the Ucayali River." Earth and Space Science 4.2 (2017): 46-75.
+<h3>Acknowledgments</h3>
+<p>
+  We are grateful for the <strong>MeanderPy</strong> package, developed by Zoltán Sylvester and contributors, which we have found invaluable for our work. The deterministic model used in our simulations is based on the functionalities provided by <strong>MeanderPy</strong>. We would like to thank the developers for making this resource available, which has significantly contributed to the progress of our research.
+</p>
+<p>
+  For more details on the <strong>MeanderPy</strong> package, please visit their GitHub repository: <a href="https://github.com/zsylvester/meanderpy" target="_blank">MeanderPy on GitHub</a>.
+</p>
+
+<h3>References</h3>
+<ul>
+  <li>Howard, Alan D., and Thomas R. Knutson. "Sufficient conditions for river meandering: A simulation approach." <em>Water Resources Research</em> 20.11 (1984): 1659-1667.</li>
+  <li>Sylvester, Zoltán, Paul Durkin, and Jacob A. Covault. "High curvatures drive river meandering." <em>Geology</em> 47.3 (2019): 263-266.</li>
+  <li>Schwenk, Jon, et al. "High spatiotemporal resolution of river planform dynamics from Landsat: The RivMAP toolbox and results from the Ucayali River." <em>Earth and Space Science</em> 4.2 (2017): 46-75.</li>
+</ul>
+
