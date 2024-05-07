@@ -47,7 +47,7 @@ plt.plot(xin,yin,label = 'Initial Channel')
 plt.plot(xfi,yfi,label = 'Final Channel')
 ```
 
-<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/1.png" width="800" height="600">
+<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/stat1.png" width="800" height="600">
 
 
 Defining parameters:
