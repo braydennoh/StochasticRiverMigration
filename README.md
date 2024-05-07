@@ -437,7 +437,7 @@ pd.DataFrame({"x":-cl2[:,1]+800, "y":-cl2[:,0]+800}).plot.line(x='x', y='y',   c
 plt.legend(frameon=False,labelcolor='white',loc="upper left")
 plt.legend('',frameon=False)
 ```
-<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/stat4.png" style="width: 500px; height: 500px;">
+<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/stat5.png" style="width: 500px; height: 350px;">
 
 ### Developed by Brayden Noh and Omar Wani
 
