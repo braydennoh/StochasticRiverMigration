@@ -137,7 +137,7 @@ ynew_ms = ynew_m
 xnew_ms = xnew_m
 ```
 
-<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/2.png" width="800" height="600">
+<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/stat2.png" style="width: 500px; height: 500px;">
 
 Now, we are going to run Meanderpy multiple times for the Markov chain Monte Carlo (MCMC) algorithm. Meanderpy has lots of variables! For our example, we are only going to vary migration rate (kl) and chezy friction factor (Cfs). Because we need to interpolate the simulated channel for every single iteration, we will define a class that will run meanderpy and interpolate at the same time. 
 
@@ -407,7 +407,7 @@ for i in np.random.randint(0, 50, 10):
 pd.DataFrame({"x":sim[0,:], "y":sim[1,:]}).plot.line(x='x', y='y', ax= ax, color='red',label="probabilistic prediction (5 years)")
 pd.DataFrame({"x":clfi[:,1], "y":clfi[:,0]}).plot.line(x='x', y='y', ax= ax, label='final actual (5 years)',color='black',lw=4)
 ```
-<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/3.png" width="800" height="600">
+<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/stat3.png" style="width: 500px; height: 500px;">
 
 Based on the posterior distribution parameter results, create the risk map based on the counting algorithm. 
 ```ruby
@@ -437,7 +437,7 @@ pd.DataFrame({"x":-cl2[:,1]+800, "y":-cl2[:,0]+800}).plot.line(x='x', y='y',   c
 plt.legend(frameon=False,labelcolor='white',loc="upper left")
 plt.legend('',frameon=False)
 ```
-<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/4.png" width="800" height="800">
+<img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/stat4.png" style="width: 500px; height: 500px;">
 
 ### Developed by Brayden Noh and Omar Wani
 
