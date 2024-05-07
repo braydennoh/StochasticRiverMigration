@@ -439,8 +439,6 @@ plt.legend('',frameon=False)
 ```
 <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/JupyterNotebook/Img/stat5.png" style="width: 500px; height: 350px;">
 
-### Co-Developed by Brayden Noh and Omar Wani
-
 <h3>Acknowledgments</h3>
 <p>
   We are grateful for the <strong>MeanderPy</strong> package, developed by Zoltán Sylvester and contributors, which we have found invaluable for our work. The deterministic model used in our simulations is based on the functionalities provided by <strong>MeanderPy</strong>. We would like to thank the developers for making this resource available, which has significantly contributed to the progress of our research.
