@@ -6,4 +6,5 @@ This folder contains data and analyses related to channel geometry with a focus 
 Reference
 When using or referring to the data and analyses in this folder, please cite the following paper:
 
-Schwenk, J., Khandelwal, A., Fratkin, M., Kumar, V., & FoufoulaGeorgiou, E. (2017). High spatiotemporal resolution of river planform dynamics from Landsat: The RivMAP toolbox and results from the Ucayali River. Earth Space Sci., 4, 46–75. This paper provides foundational methodology and insights that were instrumental in the analyses performed on the datasets contained within this directory.
+Schwenk, J., Khandelwal, A., Fratkin, M., Kumar, V., & FoufoulaGeorgiou, E. (2017). High spatiotemporal resolution of river planform dynamics from Landsat: The RivMAP toolbox and results from the Ucayali River. Earth Space Sci., 4, 46–75. 
+This paper provides foundational methodology and insights that were instrumental in the analyses performed on the datasets contained within this directory.
