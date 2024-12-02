@@ -3,10 +3,10 @@
 River migration can be predicted using a similar approach to weather forecasting. By employing probabilistic modeling techniques, we have developed MCMC-based river migration risk maps. For our paper, you can refer to our [paper](https://esurf.copernicus.org/articles/12/691/2024/esurf-12-691-2024.html) here.
 
 <p align="center">
-  <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/1bend.gif" alt="GIF 1" width="22.5%" />
-  <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/2bend.gif" alt="GIF 1" width="22.5%" />
-  <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/3bend.gif" alt="GIF 1" width="22.5%" />
-  <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/4bend.gif" alt="GIF 1" width="22.5%" />
+  <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/bend1.gif" alt="GIF 1" width="22.5%" />
+  <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/bend2.gif" alt="GIF 1" width="22.5%" />
+  <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/bend3.gif" alt="GIF 1" width="22.5%" />
+  <img src="https://github.com/snohatech/StochasticRiverMigration/blob/main/ReadMeFigs/bend4.gif" alt="GIF 1" width="22.5%" />
 </p>
 
 ## Usage
